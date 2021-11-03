@@ -19,6 +19,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val krokiButton=findViewById<Button>(R.id.kroki_button)
+            krokiButton.setOnClickListener {
+                val intent = Intent(this, KrokiActivity::class.java)
+                startActivity(intent)
+        }
+
+
 
         val kalorieButton=findViewById<Button>(R.id.kalorie_button)
 
