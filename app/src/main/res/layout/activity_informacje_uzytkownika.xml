@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".InformacjeUzytkownikaActivity"
+    android:layout_margin="30dp">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Imię i nazwisko"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        />
+
+    <EditText
+        android:id="@+id/imie_nazwiskoEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:inputType="text"
+        android:layout_marginBottom="15dp"
+        android:hint="np. Jan Nowak"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wzrost (cm)"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        />
+
+    <EditText
+        android:id="@+id/wzrostEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:layout_marginBottom="15dp"
+        android:hint="np. 165"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Waga (kg)"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        />
+
+    <EditText
+        android:id="@+id/wagaEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="15dp"
+        android:hint="np. 70"/>
+
+    <Button
+        android:id="@+id/zapiszButton"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zapisz"
+        android:layout_marginHorizontal="30dp"/>
+</LinearLayout>

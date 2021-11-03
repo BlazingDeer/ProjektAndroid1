@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ProjektAndroid1</string>
+    <string name="informacje_uzytkownika">Informacje o uzytkowniku</string>
+    <string name="liczba_krokow">Liczba Kroków</string>
+    <string name="kalorie">Kalorie</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shared_preferences_file_name">projektandroid1.shared_preferences_file1</string>
 </resources>

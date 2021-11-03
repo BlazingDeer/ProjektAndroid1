@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjektAndroid1">
         <activity
+            android:name=".KalorieActivity"
+            android:exported="false" />
+        <activity
+            android:name=".KrokiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InformacjeUzytkownikaActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
