@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.projektandroid1">
 
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjektAndroid1">
         <activity
-            android:name=".KrokiActivity"
+            android:name=".LicznikKrokowActivity"
             android:exported="false" />
         <activity
             android:name=".KalorieActivity"
