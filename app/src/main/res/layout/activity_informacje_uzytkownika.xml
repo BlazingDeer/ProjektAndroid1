@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:text="Imię i nazwisko"
         android:layout_marginTop="15dp"
-        android:textColor="@color/black"
         />
 
     <EditText
@@ -31,7 +30,6 @@
         android:layout_height="wrap_content"
         android:text="Wzrost (cm)"
         android:layout_marginTop="15dp"
-        android:textColor="@color/black"
         />
 
     <EditText
@@ -48,7 +46,6 @@
         android:layout_height="wrap_content"
         android:text="Waga (kg)"
         android:layout_marginTop="15dp"
-        android:textColor="@color/black"
         />
 
     <EditText

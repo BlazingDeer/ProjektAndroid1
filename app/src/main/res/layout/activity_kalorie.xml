@@ -6,4 +6,96 @@
     android:layout_height="match_parent"
     tools:context=".KalorieActivity">
 
+
+    <TextView
+        android:id="@+id/currentCalorieTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="0/2300"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Nazwa Posiłku"
+
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/posilekEditText"
+        app:layout_constraintTop_toTopOf="@+id/currentCalorieTextView" />
+
+    <EditText
+        android:id="@+id/posilekEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="np. Kanapka z szynką"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Ilość Kalorii"
+
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/iloscKaloriiEditText"
+        app:layout_constraintTop_toBottomOf="@+id/posilekEditText" />
+
+    <EditText
+        android:id="@+id/iloscKaloriiEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="np. 400"
+        app:layout_constraintEnd_toEndOf="@+id/posilekEditText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/posilekEditText"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/dodajKalorieButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Dodaj posiłek"
+        app:layout_constraintEnd_toEndOf="@+id/iloscKaloriiEditText"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/iloscKaloriiEditText"
+        app:layout_constraintTop_toBottomOf="@+id/iloscKaloriiEditText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dodajKalorieButton"
+        android:id="@+id/listaPosilkowRecyclerview"/>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.projektandroid1.data.ProjektAndroid1Database
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,22 +38,27 @@ class MainActivity : AppCompatActivity() {
 
 
         //Przycisk Do Informacji Uzytkownika
-        val info_uzytButton=findViewById<Button>(R.id.informacje_button)
-        info_uzytButton.setOnClickListener {
+        val informacjeUzytkownikaActivityButton=findViewById<Button>(R.id.informacjeButton)
+        informacjeUzytkownikaActivityButton.setOnClickListener {
             val intent = Intent(this, InformacjeUzytkownikaActivity::class.java)
             startActivity(intent)
         }
 
         // Przycisk Do LicznikKrokowActivity
-        val licznikKrokowActivityButton=findViewById<Button>(R.id.kroki_button)
+        val licznikKrokowActivityButton=findViewById<Button>(R.id.krokiButton)
         licznikKrokowActivityButton.setOnClickListener {
                 val intent = Intent(this, LicznikKrokowActivity::class.java)
                 startActivity(intent)
         }
 
+        // Przycisk Do KalorieActivity
+        val kalorieActivityButton=findViewById<Button>(R.id.kalorieButton)
+        kalorieActivityButton.setOnClickListener {
+            val intent = Intent(this, KalorieActivity::class.java)
+            startActivity(intent)
+        }
 
 
-        val kalorieButton=findViewById<Button>(R.id.kalorie_button)
 
     }
 

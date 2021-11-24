@@ -9,21 +9,21 @@
     android:layout_margin="30dp">
 
     <Button
-        android:id="@+id/informacje_button"
+        android:id="@+id/informacjeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/informacje_uzytkownika"
         android:layout_margin="20dp"/>
 
     <Button
-        android:id="@+id/kroki_button"
+        android:id="@+id/krokiButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/liczba_krokow"
         android:layout_margin="20dp"/>
 
     <Button
-        android:id="@+id/kalorie_button"
+        android:id="@+id/kalorieButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/kalorie"
