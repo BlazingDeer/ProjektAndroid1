@@ -57,6 +57,53 @@
         android:layout_marginBottom="15dp"
         android:hint="np. 70"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Płeć"
+        android:layout_marginTop="15dp" />
+
+    <Spinner
+        android:id="@+id/plecSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginBottom="15dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cel ilości kalorii"
+        android:layout_marginTop="15dp"
+        />
+
+    <EditText
+        android:id="@+id/cel_kalorieEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="15dp"
+        android:hint="np. 2000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cel ilości kroków"
+        android:layout_marginTop="15dp"
+        />
+
+    <EditText
+        android:id="@+id/cel_krokiEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="15dp"
+        android:hint="np. 6000"/>
+
+
+
     <Button
         android:id="@+id/zapiszButton"
         android:gravity="center"

@@ -6,4 +6,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="shared_preferences_file_name">projektandroid1.shared_preferences_file1</string>
+
+    <string-array name="plec_array">
+        <item>Mężczyzna</item>
+        <item>Kobieta</item>
+        <item>Inny</item>
+    </string-array>
 </resources>

@@ -19,10 +19,19 @@ class LicznikKrokowActivity : AppCompatActivity(),SensorEventListener {
     private var running = false
     private var sumaLiczbaKrokow = 0f
     private var wczesniejszaLiczbaKrokow = 0f
+    private var cel_kroki=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_licznik_krokow)
+
+        val sharedPref = getSharedPreferences(
+            getString(R.string.shared_preferences_file_name),
+            Context.MODE_PRIVATE
+        )
+
+        //dodac ten cel do wyswietlania na liczniku
+        cel_kroki=sharedPref.getInt("cel_kroki",6000)
 
         wczytajDane()
         resetLiczenia()
@@ -56,6 +65,8 @@ class LicznikKrokowActivity : AppCompatActivity(),SensorEventListener {
 
     fun resetLiczenia(){
         val tvLicznik = findViewById<TextView>(R.id.textView4)
+
+        //zeby to dzialalo to do przytrzymywania jest onTouch czy cos takiego
         tvLicznik.setOnClickListener{
             Toast.makeText(this,"Przytrzymaj żeby zresetować!",Toast.LENGTH_LONG).show()
         }

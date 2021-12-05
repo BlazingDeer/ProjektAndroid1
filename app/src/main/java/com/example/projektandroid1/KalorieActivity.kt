@@ -1,5 +1,6 @@
 package com.example.projektandroid1
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -26,6 +27,7 @@ class KalorieActivity : AppCompatActivity() {
     private var mRecyclerViewAdapter: RecyclerView.Adapter<KalorieRecyclerViewAdapter.ExampleViewHolder>? = null
     private var mLayoutManager:RecyclerView.LayoutManager?=null
     private var mKalorieList: ArrayList<Kalorie>? =null
+    private var cel_kalorie=0
 
 
 
@@ -38,14 +40,20 @@ class KalorieActivity : AppCompatActivity() {
         dodajKalorieButton=findViewById<Button>(R.id.dodajKalorieButton)
         mCurrentCalorieTextView=findViewById(R.id.currentCalorieTextView)
 
+        val sharedPref = getSharedPreferences(
+            getString(R.string.shared_preferences_file_name),
+            Context.MODE_PRIVATE
+        )
+        cel_kalorie=sharedPref.getInt("cel_kalorie",2300)
+
+
         mRecyclerView=findViewById(R.id.listaPosilkowRecyclerview)
         mLayoutManager=LinearLayoutManager(this)
+
 
         CoroutineScope(IO).launch {
             initListaPosilkow()
         }
-
-
 
         dodajKalorieButton.setOnClickListener {
             //zapytania do bazy danych musza byc async bo inaczej wypierdala wyjatek
@@ -111,7 +119,7 @@ class KalorieActivity : AppCompatActivity() {
             }
         }
 
-        var calorieTarget: Int=2500
+        var calorieTarget: Int=cel_kalorie
 
         var s: String = "$sum/$calorieTarget"
 
