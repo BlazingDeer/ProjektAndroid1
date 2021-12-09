@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjektAndroid1">
         <activity
+            android:name=".SplashScreenActivity"
+            android:theme="@style/SplashScreenTheme"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".LicznikKrokowActivity"
             android:exported="false" />
         <activity

@@ -13,4 +13,18 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Sprawdzony, działajacy styl do splashScreena. Użyć w manifeście -->
+    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="statusBarBackground">#08376b</item>
+    </style>
+
+    <!-- SplashScreen z wykorzystaniem nowego API (Android 12) -->
+    <style name="Theme.ProjektAndroid1.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#1ABA82</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>
+        <item name="windowSplashScreenAnimationDuration">3000</item>
+        <item name="postSplashScreenTheme">@style/Theme.ProjektAndroid1</item>
+    </style>
 </resources>
