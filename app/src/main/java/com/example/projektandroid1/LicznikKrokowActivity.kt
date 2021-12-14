@@ -10,84 +10,32 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.viewpager2.widget.ViewPager2
+import com.example.projektandroid1.adapters.KrokiViewPagerAdapter
+import com.example.projektandroid1.adapters.ViewPagerAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
-class LicznikKrokowActivity : AppCompatActivity(),SensorEventListener {
-
-
-    private var sensorManager:SensorManager?=null
-
-    private var running = false
-    private var sumaLiczbaKrokow = 0f
-    private var wczesniejszaLiczbaKrokow = 0f
-    private var cel_kroki=0
+class LicznikKrokowActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_licznik_krokow)
 
-        val sharedPref = getSharedPreferences(
-            getString(R.string.shared_preferences_file_name),
-            Context.MODE_PRIVATE
-        )
+        val tabLayout = findViewById<TabLayout>(R.id.kroki_tab_layout)
+        val viewPager2 = findViewById<ViewPager2>(R.id.kroki_view_pager_2)
+        val adapter = KrokiViewPagerAdapter(supportFragmentManager, lifecycle)
 
-        //dodac ten cel do wyswietlania na liczniku
-        cel_kroki=sharedPref.getInt("cel_kroki",6000)
-
-        wczytajDane()
-        resetLiczenia()
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-    }
-
-    override fun onResume() {
-        super.onResume()
-        running = true
-        val czujnikKrokow = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-        if(czujnikKrokow==null){
-            Toast.makeText(this,"Niekompatybilne urządzenie!",Toast.LENGTH_LONG).show()
-        }
-        else{
-            sensorManager?.registerListener(this,czujnikKrokow,SensorManager.SENSOR_DELAY_UI)
-        }
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        if(running){
-            sumaLiczbaKrokow = event!!.values[0]
-            val obecnaLiczbaKrokow = sumaLiczbaKrokow.toInt() - wczesniejszaLiczbaKrokow.toInt()
-            val tv_licznik = findViewById<TextView>(R.id.textView4)
-            tv_licznik.text = ("$obecnaLiczbaKrokow")
-        }
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
-
-    fun resetLiczenia(){
-        val tvLicznik = findViewById<TextView>(R.id.textView4)
-
-        //zeby to dzialalo to do przytrzymywania jest onTouch czy cos takiego
-        tvLicznik.setOnClickListener{
-            Toast.makeText(this,"Przytrzymaj żeby zresetować!",Toast.LENGTH_LONG).show()
-        }
-        tvLicznik.setOnClickListener{
-            wczesniejszaLiczbaKrokow = sumaLiczbaKrokow
-            tvLicznik.text = 0.toString()
-            zapiszDane()
-        }
-    }
-
-    private fun zapiszDane(){
-        val sharedPreferences = getSharedPreferences("pref1",Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putFloat("klucz1",wczesniejszaLiczbaKrokow)
-        editor.apply()
-    }
-
-    private fun wczytajDane(){
-        val sharedPreferences = getSharedPreferences("pref1",Context.MODE_PRIVATE)
-        val savedNumber = sharedPreferences.getFloat("klucz1",0f)
-        Log.d("MainActivity","$savedNumber")
-        wczesniejszaLiczbaKrokow = savedNumber
+        viewPager2.adapter = adapter
+        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+            when (position) {
+                0 -> {
+                    tab.text = "Licznik Kroków"
+                }
+                1 -> {
+                    tab.text = "Statystyki"
+                }
+            }
+        }.attach()
     }
 }
