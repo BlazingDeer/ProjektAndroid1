@@ -23,4 +23,7 @@ interface KalorieDao {
 
     @Query("SELECT * FROM kalorie_table WHERE id=:target_id")
     suspend fun getKalorieById(target_id: Int): Kalorie
+
+    @Query("SELECT sum(ilosc_kalorii) FROM kalorie_table WHERE date >=:fromDate AND date < :toDate")
+    suspend fun getKalorieSumByDate(fromDate: Date, toDate: Date): Int?
 }

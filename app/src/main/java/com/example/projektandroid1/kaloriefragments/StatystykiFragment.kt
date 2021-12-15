@@ -5,7 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.projektandroid1.JEBANEDATY
+import com.example.projektandroid1.KalorieRecyclerViewAdapter
 import com.example.projektandroid1.R
+import com.example.projektandroid1.data.Kalorie
+import com.example.projektandroid1.data.ProjektAndroid1Database
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.IValueFormatter
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.android.synthetic.main.fragment_dodaj_posilek.*
+import kotlinx.android.synthetic.main.fragment_statystyki.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class StatystykiFragment : Fragment() {
@@ -22,6 +43,71 @@ class StatystykiFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_statystyki, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        CoroutineScope(Dispatchers.IO).launch {
+            setBarChartValues()
+        }
+    }
+
+
+    suspend fun setBarChartValues()
+    {
+        var fromDates = ArrayList<Date>()
+        var toDates = ArrayList<Date>()
+        var kalorieList = ArrayList<Int>()
+        var barList= ArrayList<BarEntry>()
+        for( i in 7 downTo 1)
+        {
+            val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(i)
+            val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(i-1)
+            fromDates.add(fromDate)
+            toDates.add(toDate)
+
+            val kalorie = ProjektAndroid1Database.get(requireActivity().application).getKalorieDao()
+                    .getKalorieSumByDate(fromDate, toDate)?: 0
+            kalorieList.add(kalorie!!)
+
+        }
+
+        for(i in 0..6)
+        {
+            barList.add(BarEntry(i.toFloat(), kalorieList[i].toFloat()))
+        }
+
+        class xdateFormatter:IndexAxisValueFormatter(){
+            val dateFormat = SimpleDateFormat("dd-MM")
+            override fun getFormattedValue(value: Float): String {
+                return dateFormat.format(fromDates[value.toInt()]).toString()
+            }
+        }
+
+        withContext(Dispatchers.Main) {
+            val barDataSet = BarDataSet(barList, "Ostatni tydzień")
+            val barData = BarData(barDataSet)
+
+            kalorie_week_bar_chart.data = barData
+
+            kalorie_week_bar_chart.axisRight.isEnabled=false
+            kalorie_week_bar_chart.axisLeft.isEnabled=false
+            kalorie_week_bar_chart.axisLeft.setDrawGridLines(false)
+            kalorie_week_bar_chart.axisLeft.setDrawAxisLine(false)
+            kalorie_week_bar_chart.axisLeft.textSize=12f
+            kalorie_week_bar_chart.axisLeft.zeroLineWidth=0f
+            kalorie_week_bar_chart.axisLeft.axisMinimum=0f
+            kalorie_week_bar_chart.xAxis.valueFormatter=xdateFormatter()
+            kalorie_week_bar_chart.xAxis.setDrawGridLines(false)
+            kalorie_week_bar_chart.xAxis.position=XAxis.XAxisPosition.BOTTOM
+            kalorie_week_bar_chart.legend.isEnabled=false
+            kalorie_week_bar_chart.xAxis.textSize=14f
+            kalorie_week_bar_chart.description.isEnabled=false
+            kalorie_week_bar_chart.animateY(1500)
+
+        }
+
+
     }
 
 }
