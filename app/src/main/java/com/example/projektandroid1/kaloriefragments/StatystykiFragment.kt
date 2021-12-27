@@ -1,10 +1,15 @@
 package com.example.projektandroid1.kaloriefragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import com.example.projektandroid1.JEBANEDATY
 import com.example.projektandroid1.KalorieRecyclerViewAdapter
 import com.example.projektandroid1.R
@@ -52,7 +57,7 @@ class StatystykiFragment : Fragment() {
         }
     }
 
-
+    //utworzenie danych dla wykresu
     suspend fun setBarChartValues()
     {
         var fromDates = ArrayList<Date>()
@@ -85,8 +90,12 @@ class StatystykiFragment : Fragment() {
         }
 
         withContext(Dispatchers.Main) {
+            val textColor=requireContext().resolveColorAttr(android.R.attr.textColorPrimary)
             val barDataSet = BarDataSet(barList, "Ostatni tydzień")
+            barDataSet.valueTextSize=12f
+            barDataSet.valueTextColor=textColor
             val barData = BarData(barDataSet)
+
 
             kalorie_week_bar_chart.data = barData
 
@@ -95,19 +104,38 @@ class StatystykiFragment : Fragment() {
             kalorie_week_bar_chart.axisLeft.setDrawGridLines(false)
             kalorie_week_bar_chart.axisLeft.setDrawAxisLine(false)
             kalorie_week_bar_chart.axisLeft.textSize=12f
+            kalorie_week_bar_chart.axisLeft.textColor=textColor
             kalorie_week_bar_chart.axisLeft.zeroLineWidth=0f
             kalorie_week_bar_chart.axisLeft.axisMinimum=0f
             kalorie_week_bar_chart.xAxis.valueFormatter=xdateFormatter()
             kalorie_week_bar_chart.xAxis.setDrawGridLines(false)
             kalorie_week_bar_chart.xAxis.position=XAxis.XAxisPosition.BOTTOM
+            kalorie_week_bar_chart.xAxis.textColor=textColor
             kalorie_week_bar_chart.legend.isEnabled=false
-            kalorie_week_bar_chart.xAxis.textSize=14f
+            kalorie_week_bar_chart.xAxis.textSize=12f
             kalorie_week_bar_chart.description.isEnabled=false
             kalorie_week_bar_chart.animateY(1500)
+            kalorie_week_bar_chart.description.textColor=textColor
 
         }
 
 
+    }
+
+
+    //Funkcje do znalezienia koloru z motywu
+    @ColorInt
+    fun Context.resolveColorAttr(@AttrRes colorAttr: Int): Int {
+        val resolvedAttr = resolveThemeAttr(colorAttr)
+        // resourceId is used if it's a ColorStateList, and data if it's a color reference or a hex color
+        val colorRes = if (resolvedAttr.resourceId != 0) resolvedAttr.resourceId else resolvedAttr.data
+        return ContextCompat.getColor(this, colorRes)
+    }
+
+    fun Context.resolveThemeAttr(@AttrRes attrRes: Int): TypedValue {
+        val typedValue = TypedValue()
+        theme.resolveAttribute(attrRes, typedValue, true)
+        return typedValue
     }
 
 }
