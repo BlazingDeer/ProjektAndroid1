@@ -21,6 +21,11 @@ class KalorieRecyclerViewAdapter(kalorieList: ArrayList<Kalorie>) :
 
     }
 
+    fun setListData(data: ArrayList<Kalorie>)
+    {
+        mKalorieList=data
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
         val v: View=LayoutInflater.from(parent.context).inflate(R.layout.example_item,
             parent,false)

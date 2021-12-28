@@ -1,5 +1,6 @@
 package com.example.projektandroid1.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -17,8 +18,14 @@ interface KalorieDao {
     @Query("SELECT * FROM kalorie_table ORDER BY id ASC")
     suspend fun getAllData(): List<Kalorie>
 
+    @Query("SELECT * FROM kalorie_table ORDER BY date DESC")
+    fun getAllLiveData(): LiveData<List<Kalorie>>
+
     @Query("SELECT * FROM kalorie_table WHERE date >= :targetDate ORDER BY date DESC")
     suspend fun getKalorieByDate(targetDate: Date): List<Kalorie>
+
+    @Query("SELECT * FROM kalorie_table WHERE date > :targetDate ORDER BY date DESC")
+    fun getKalorieBeforeDate(targetDate: Date): LiveData<List<Kalorie>>
 
 
     @Query("SELECT * FROM kalorie_table WHERE id=:target_id")
@@ -26,4 +33,6 @@ interface KalorieDao {
 
     @Query("SELECT sum(ilosc_kalorii) FROM kalorie_table WHERE date >=:fromDate AND date < :toDate")
     suspend fun getKalorieSumByDate(fromDate: Date, toDate: Date): Int?
+
+
 }

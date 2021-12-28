@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projektandroid1.JEBANEDATY
+import com.example.projektandroid1.KalorieActivity
 import com.example.projektandroid1.KalorieRecyclerViewAdapter
 import com.example.projektandroid1.R
 import com.example.projektandroid1.data.Kalorie
@@ -29,6 +30,7 @@ class DodajPosilekFragment : Fragment() {
     private var mLayoutManager: RecyclerView.LayoutManager?=null
     private var mKalorieList: ArrayList<Kalorie>? =null
     private var cel_kalorie=0
+    lateinit var myActivity: KalorieActivity
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +49,8 @@ class DodajPosilekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        myActivity=(requireActivity() as KalorieActivity)
 
 
         val sharedPref = requireActivity().getSharedPreferences(
@@ -76,8 +80,7 @@ class DodajPosilekFragment : Fragment() {
     private suspend fun initListaPosilkow() {
         //pobierz dzisiejsze posilki z db
         mKalorieList = ArrayList<Kalorie>(
-            ProjektAndroid1Database.get(requireActivity().application).getKalorieDao()
-                .getKalorieByDate(JEBANEDATY.getNowDateWithoutTime())
+            myActivity.kalorieDao.getKalorieByDate(JEBANEDATY.getNowDateWithoutTime())
         )
 
         // dodanie przedmiotow z bazy danych do RecyclerView
@@ -98,7 +101,7 @@ class DodajPosilekFragment : Fragment() {
                 JEBANEDATY.getNowDate()
             )
             val inserted_id =
-                ProjektAndroid1Database.get(requireActivity().application).getKalorieDao().insertKalorie(newKalorie)
+                myActivity.kalorieDao.insertKalorie(newKalorie)
             mKalorieList?.add(0, newKalorie)
 
 

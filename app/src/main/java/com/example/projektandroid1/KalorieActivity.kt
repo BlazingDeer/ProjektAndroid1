@@ -4,10 +4,17 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.projektandroid1.adapters.ViewPagerAdapter
+import com.example.projektandroid1.data.KalorieDao
+import com.example.projektandroid1.data.ProjektAndroid1Database
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class KalorieActivity : AppCompatActivity() {
+
+    public lateinit var kalorieDao: KalorieDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +23,11 @@ class KalorieActivity : AppCompatActivity() {
         val tabLayout=findViewById<TabLayout>(R.id.kalorie_tab_layout)
         val viewPager2=findViewById<ViewPager2>(R.id.kalorie_view_pager_2)
         val adapter=ViewPagerAdapter(supportFragmentManager,lifecycle)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            kalorieDao= ProjektAndroid1Database.get(this@KalorieActivity.application).getKalorieDao()
+        }
+
 
         viewPager2.adapter=adapter
         TabLayoutMediator(tabLayout,viewPager2){tab,position->
