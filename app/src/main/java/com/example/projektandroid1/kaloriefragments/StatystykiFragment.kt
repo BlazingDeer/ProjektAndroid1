@@ -13,7 +13,9 @@ import androidx.core.content.ContextCompat
 import com.example.projektandroid1.JEBANEDATY
 import com.example.projektandroid1.KalorieActivity
 import com.example.projektandroid1.R
+import com.example.projektandroid1.data.Kalorie
 import com.example.projektandroid1.data.ProjektAndroid1Database
+import com.example.projektandroid1.data.kalorie_statystyki.NajczestszyPosilek
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -54,7 +56,14 @@ class StatystykiFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             setBarChartValues()
+            updateStatystykiTextFields()
         }
+
+        myActivity.kalorieDao.getAllLiveData().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            CoroutineScope(Dispatchers.IO).launch {
+                updateStatystykiTextFields()
+            }
+        })
     }
 
     //utworzenie danych dla wykresu
@@ -218,26 +227,159 @@ class StatystykiFragment : Fragment() {
         }
     }
 
-    fun setSredniaIloscKaloriiNaPosilek()
+    suspend fun setSredniaIloscKaloriiNaPosilek(okresCzasu: String)
     {
+        var ilosc_posilkow: Int=0
+        var suma_kalorii: Int=0
+        var dni: Int=0
+        var srednia: Float=0f
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                dni=6
+            }
+
+            "miesiac" -> {
+                dni=29
+            }
+        }
+
+        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
+        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+
+        ilosc_posilkow = myActivity.kalorieDao.getPosilkiCountByDate(fromDate, toDate)?: 1
+        suma_kalorii=myActivity.kalorieDao.getKalorieSumByDate(fromDate,toDate)?: 0
+
+        srednia=suma_kalorii.toFloat()/ilosc_posilkow.toFloat()
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                kalorie_tydzien_srednia_kalorie_posilek.text="$srednia"
+            }
+
+            "miesiac" -> {
+                kalorie_miesiac_srednia_kalorie_posilek.text="$srednia"
+            }
+        }
+    }
+
+    suspend fun setNajczestszyPosilek(okresCzasu: String)
+    {
+        var posilek: NajczestszyPosilek?
+
+        var dni: Int=0
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                dni=6
+            }
+
+            "miesiac" -> {
+                dni=29
+            }
+        }
+
+        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
+        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+        posilek=myActivity.kalorieDao.getNajczestszyPosilekByDate(fromDate,toDate)?: NajczestszyPosilek()
+
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                kalorie_tydzien_najczesciej_posilek.text="${posilek.posilek} | ${posilek.ilosc}"
+            }
+
+            "miesiac" -> {
+                kalorie_miesiac_najczesciej_posilek.text="${posilek.posilek} | ${posilek.ilosc}"
+            }
+        }
 
     }
 
-    fun setNajczestszyPosilek()
+
+    suspend fun setIloscSpozytychPosilkow(okresCzasu: String)
     {
+        var ilosc_posilkow: Int=0
+        var dni: Int=0
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                dni=6
+            }
+
+            "miesiac" -> {
+                dni=29
+            }
+        }
+        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
+        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+
+        ilosc_posilkow = myActivity.kalorieDao.getPosilkiCountByDate(fromDate, toDate)?: 0
+
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                kalorie_tydzien_ilosc_posilki_tydzien.text="$ilosc_posilkow"
+            }
+
+            "miesiac" -> {
+                kalorie_miesiac_ilosc_posilki_miesiac.text="$ilosc_posilkow"
+            }
+        }
 
     }
 
-
-    fun setIloscSpozytychPosilkow()
+    suspend fun setIloscSpozytychKalorii(okresCzasu: String)
     {
 
+        var suma_kalorii: Int=0
+        var dni: Int=0
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                dni=6
+            }
+
+            "miesiac" -> {
+                dni=29
+            }
+        }
+
+        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
+        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+        suma_kalorii=myActivity.kalorieDao.getKalorieSumByDate(fromDate,toDate)?: 0
+
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                kalorie_tydzien_suma_kalorie.text="$suma_kalorii"
+            }
+
+            "miesiac" -> {
+                kalorie_miesiac_suma_kalorie.text="$suma_kalorii"
+            }
+        }
     }
 
-    fun setIloscSpozytychKalorii()
+    suspend fun updateStatystykiTextFields()
     {
+        //tydzien
+        setSredniaIloscKaloriiDzien("tydzien")
+        setSredniaIloscPosilkowDzien("tydzien")
+        setSredniaIloscKaloriiNaPosilek("tydzien")
+        setNajczestszyPosilek("tydzien")
+        setIloscSpozytychPosilkow("tydzien")
+        setIloscSpozytychKalorii("tydzien")
 
+
+        //miesiac
+
+        setSredniaIloscKaloriiDzien("miesiac")
+        setSredniaIloscPosilkowDzien("miesiac")
+        setSredniaIloscKaloriiNaPosilek("miesiac")
+        setNajczestszyPosilek("miesiac")
+        setIloscSpozytychPosilkow("miesiac")
+        setIloscSpozytychKalorii("miesiac")
     }
-
 
 }
