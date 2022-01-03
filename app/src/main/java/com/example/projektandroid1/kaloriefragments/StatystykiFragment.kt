@@ -11,19 +11,14 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.example.projektandroid1.JEBANEDATY
-import com.example.projektandroid1.KalorieRecyclerViewAdapter
+import com.example.projektandroid1.KalorieActivity
 import com.example.projektandroid1.R
-import com.example.projektandroid1.data.Kalorie
 import com.example.projektandroid1.data.ProjektAndroid1Database
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
-import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
-import kotlinx.android.synthetic.main.fragment_dodaj_posilek.*
 import kotlinx.android.synthetic.main.fragment_statystyki.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +30,8 @@ import kotlin.collections.ArrayList
 
 
 class StatystykiFragment : Fragment() {
+
+    lateinit var myActivity: KalorieActivity
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +49,9 @@ class StatystykiFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        myActivity=(requireActivity() as KalorieActivity)
+
         CoroutineScope(Dispatchers.IO).launch {
             setBarChartValues()
         }
@@ -137,5 +137,107 @@ class StatystykiFragment : Fragment() {
         theme.resolveAttribute(attrRes, typedValue, true)
         return typedValue
     }
+
+
+    //#####################################
+    // funkcje do statystyk
+
+    suspend fun setSredniaIloscKaloriiDzien(okresCzasu: String)
+    {
+        var suma_kalorii: Int=0
+        var dzielnik: Int=0
+        var srednia: Float=0f
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                dzielnik=6
+            }
+
+            "miesiac" -> {
+                dzielnik=29
+            }
+        }
+
+        for( i in dzielnik downTo 0)
+        {
+            val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(i)
+            val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(i-1)
+
+            suma_kalorii += myActivity.kalorieDao.getKalorieSumByDate(fromDate, toDate)?: 0
+        }
+
+        srednia=suma_kalorii.toFloat()/dzielnik.toFloat()
+
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                kalorie_tydzien_srednia_kalorie_dzien.text="$srednia"
+            }
+
+            "miesiac" -> {
+                kalorie_miesiac_srednia_kalorie_dzien.text="$srednia"
+            }
+        }
+    }
+
+    suspend fun setSredniaIloscPosilkowDzien(okresCzasu: String)
+    {
+        var suma_ilosci_posilkow: Int=0
+        var dzielnik: Int=0
+        var srednia: Float=0f
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                dzielnik=6
+            }
+
+            "miesiac" -> {
+                dzielnik=29
+            }
+        }
+
+        for( i in dzielnik downTo 0)
+        {
+            val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(i)
+            val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(i-1)
+
+            suma_ilosci_posilkow += myActivity.kalorieDao.getPosilkiCountByDate(fromDate, toDate)?: 0
+        }
+
+        srednia=suma_ilosci_posilkow.toFloat()/dzielnik.toFloat()
+
+        when(okresCzasu)
+        {
+            "tydzien" -> {
+                kalorie_tydzien_srednia_posilki_dzien.text="$srednia"
+            }
+
+            "miesiac" -> {
+                kalorie_miesiac_srednia_posilki_dzien.text="$srednia"
+            }
+        }
+    }
+
+    fun setSredniaIloscKaloriiNaPosilek()
+    {
+
+    }
+
+    fun setNajczestszyPosilek()
+    {
+
+    }
+
+
+    fun setIloscSpozytychPosilkow()
+    {
+
+    }
+
+    fun setIloscSpozytychKalorii()
+    {
+
+    }
+
 
 }

@@ -51,7 +51,7 @@ class WszystkiePosilkiFragment : Fragment() {
         myActivity.kalorieDao.getAllLiveData().observe(viewLifecycleOwner, Observer{
             mRecyclerViewAdapter.setListData(ArrayList(it))
             mRecyclerViewAdapter.notifyDataSetChanged()
-            Toast.makeText(context,"Update",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context,"Update",Toast.LENGTH_SHORT).show()
         })
     }
 

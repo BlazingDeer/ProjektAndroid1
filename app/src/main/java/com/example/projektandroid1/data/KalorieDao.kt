@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.projektandroid1.data.kalorie_statystyki.NajczestszyPosilek
 import java.util.Date
 
 @Dao
@@ -31,8 +32,23 @@ interface KalorieDao {
     @Query("SELECT * FROM kalorie_table WHERE id=:target_id")
     suspend fun getKalorieById(target_id: Int): Kalorie
 
+
+
+    //###############################
+    // STATYSTYKI
+
+
+    //ilosc posilkow
+    @Query("SELECT count(*) as ilosc_posilkow FROM kalorie_table" +
+            " WHERE date >=:fromDate AND date < :toDate")
+    suspend fun getPosilkiCountByDate(fromDate: Date, toDate: Date): Int?
+
+    //najczestszy posilek
+    @Query("SELECT max(t.ilosc) as ilosc, t.posilek as posilek from (SELECT count(k.posilek) as ilosc, k.posilek FROM kalorie_table k WHERE date >=:fromDate AND date < :toDate group by k.posilek) t")
+    suspend fun getNajczestszyPosilekByDate(fromDate: Date, toDate: Date): NajczestszyPosilek
+
+    // suma spozytych kalorii
     @Query("SELECT sum(ilosc_kalorii) FROM kalorie_table WHERE date >=:fromDate AND date < :toDate")
     suspend fun getKalorieSumByDate(fromDate: Date, toDate: Date): Int?
-
 
 }

@@ -1,16 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".kaloriefragments.StatystykiFragment">
+    android:layout_height="match_parent">
 
-<com.github.mikephil.charting.charts.BarChart
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="30dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".kaloriefragments.StatystykiFragment">
 
-    android:id="@+id/kalorie_week_bar_chart"/>
+        <com.github.mikephil.charting.charts.BarChart
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginBottom="30dp"
 
-</LinearLayout>
+            android:id="@+id/kalorie_week_bar_chart"/>
+
+        <!-- Statystyki na tydzień-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Tydzień"
+            android:textSize="11pt"
+            android:textStyle="bold" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:stretchColumns="*"
+            android:layout_marginHorizontal="10dp"
+            >
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Średnia ilość kalorii na dzień:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_tydzien_srednia_kalorie_dzien"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Średnia ilość posiłków na dzień:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_tydzien_srednia_posilki_dzien"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Średnia ilość kalorii na posiłek:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_tydzien_srednia_kalorie_posilek"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Najczęściej jedzony posiłek:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_tydzien_najczesciej_posilek"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Ilość spożytych posiłków:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_tydzien_ilosc_posilki_tydzien"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Suma spożytych kalorii:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_tydzien_suma_kalorie"/>
+            </TableRow>
+        </TableLayout>
+
+
+
+
+        <!--
+        #########################################
+        #########################################
+        #########################################
+        Statystyki na miesiąc(30 dni)-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="30 Dni"
+            android:textSize="11pt"
+            android:textStyle="bold" />
+
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:stretchColumns="*"
+            android:layout_marginHorizontal="10dp"
+            >
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Średnia ilość kalorii na dzień:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_miesiac_srednia_kalorie_dzien"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Średnia ilość posiłków na dzień:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_miesiac_srednia_posilki_dzien"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Średnia ilość kalorii na posiłek:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_miesiac_srednia_kalorie_posilek"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Najczęściej jedzony posiłek:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_miesiac_najczesciej_posilek"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Ilość spożytych posiłków:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_miesiac_ilosc_posilki_miesiac"/>
+            </TableRow>
+            <TableRow
+                android:layout_marginVertical="2dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Suma spożytych kalorii:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="2900"
+                    android:id="@+id/kalorie_miesiac_suma_kalorie"/>
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+</ScrollView>
