@@ -11,9 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/kroki_tab_layout"/>
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/kroki_view_pager_2"/>
+        android:layout_height="match_parent">
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/kroki_view_pager_2"/>
+    </androidx.core.widget.NestedScrollView>
+
 
 </LinearLayout>

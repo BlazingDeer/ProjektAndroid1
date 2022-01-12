@@ -20,6 +20,8 @@ class KalorieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kalorie)
 
+        this.setTitle("KeepFit - Kalorie")
+
         val tabLayout=findViewById<TabLayout>(R.id.kalorie_tab_layout)
         val viewPager2=findViewById<ViewPager2>(R.id.kalorie_view_pager_2)
         val adapter=ViewPagerAdapter(supportFragmentManager,lifecycle)

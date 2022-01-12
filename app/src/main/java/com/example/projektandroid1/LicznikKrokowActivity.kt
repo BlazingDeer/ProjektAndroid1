@@ -22,6 +22,8 @@ class LicznikKrokowActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_licznik_krokow)
 
+        this.setTitle("KeepFit - Aktywność")
+
         val tabLayout = findViewById<TabLayout>(R.id.kroki_tab_layout)
         val viewPager2 = findViewById<ViewPager2>(R.id.kroki_view_pager_2)
         val adapter = KrokiViewPagerAdapter(supportFragmentManager, lifecycle)
