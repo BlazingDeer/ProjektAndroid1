@@ -1,12 +1,15 @@
 package com.example.projektandroid1
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.*
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_informacje_uzytkownika.*
 
 class InformacjeUzytkownikaActivity : AppCompatActivity() {
 
@@ -32,6 +35,8 @@ class InformacjeUzytkownikaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_informacje_uzytkownika)
 
         this.setTitle("KeepFit - Dane użytkownika")
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
 
         zapiszButton = findViewById<Button>(R.id.zapiszButton)
         imie_nazwiskoEditText = findViewById<TextInputLayout>(R.id.imie_nazwiskoEditText)
@@ -82,6 +87,8 @@ class InformacjeUzytkownikaActivity : AppCompatActivity() {
         autoCompleteTextView.setAdapter(arrayAdapter)
 
         setDefaultFieldValues()
+        val caloriesBurntValue = findViewById<TextView>(R.id.caloriesBurntValue)
+        caloriesBurntValue.text = obliczSpaloneKalorie().plus(" kcal")
 
         zapiszButton.setOnClickListener {
             val sharedPref = getSharedPreferences(
@@ -128,6 +135,11 @@ class InformacjeUzytkownikaActivity : AppCompatActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        startActivity(Intent(this, MainActivity::class.java))
+        return super.onOptionsItemSelected(item)
+    }
+
     fun setDefaultFieldValues() {
 
         val imie_nazwisko_pref = sharedPref.getString("imie_nazwisko", "")
@@ -153,5 +165,26 @@ class InformacjeUzytkownikaActivity : AppCompatActivity() {
         cel_krokiEditText.setHelperText("Obecnie $cel_kroki_pref")
 
     }
+
+    //współczynnik TEE(total energy expenditure)
+    private fun obliczSpaloneKalorie(): String{
+        val stepsSharedPref = getSharedPreferences("stepCounter_sharedPref", Context.MODE_PRIVATE)
+        val kroki = stepsSharedPref.getInt("obecnaLiczbaKrokow",0)
+        val bmr: Double
+        val wynik: String
+        val plec_pref = sharedPref.getString("plec", "Inny")
+        val waga_pref = sharedPref.getFloat("waga", 0.0f)
+        val wzrost_pref = sharedPref.getInt("wzrost", 0)
+        if(plec_pref.equals("Mężczyzna")){
+            bmr = 66+6.2*waga_pref*0.45+12.7*wzrost_pref*2.54-6.27*24
+        }
+        else{
+            bmr = 655+4.35*waga_pref*0.45+4.7*wzrost_pref*2.54-4.7*24
+        }
+        val tee = (bmr*1.4)/200*kroki
+        wynik = "%.2f".format(tee)
+        return wynik
+    }
+
 
 }

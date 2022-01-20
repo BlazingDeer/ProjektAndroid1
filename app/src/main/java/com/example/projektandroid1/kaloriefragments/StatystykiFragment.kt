@@ -10,10 +10,9 @@ import android.view.ViewGroup
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import com.example.projektandroid1.JEBANEDATY
+import com.example.projektandroid1.Daty
 import com.example.projektandroid1.KalorieActivity
 import com.example.projektandroid1.R
-import com.example.projektandroid1.data.Kalorie
 import com.example.projektandroid1.data.ProjektAndroid1Database
 import com.example.projektandroid1.data.kalorie_statystyki.NajczestszyPosilek
 import com.github.mikephil.charting.components.XAxis
@@ -75,8 +74,8 @@ class StatystykiFragment : Fragment() {
         var barList= ArrayList<BarEntry>()
         for( i in 7 downTo 1)
         {
-            val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(i)
-            val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(i-1)
+            val fromDate = Daty.getDaysAgoDateWithoutTime(i)
+            val toDate=Daty.getDaysAgoDateWithoutTime(i-1)
             fromDates.add(fromDate)
             toDates.add(toDate)
 
@@ -169,8 +168,8 @@ class StatystykiFragment : Fragment() {
 
         for( i in dzielnik downTo 0)
         {
-            val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(i)
-            val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(i-1)
+            val fromDate = Daty.getDaysAgoDateWithoutTime(i)
+            val toDate=Daty.getDaysAgoDateWithoutTime(i-1)
 
             suma_kalorii += myActivity.kalorieDao.getKalorieSumByDate(fromDate, toDate)?: 0
         }
@@ -207,8 +206,8 @@ class StatystykiFragment : Fragment() {
 
         for( i in dzielnik downTo 0)
         {
-            val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(i)
-            val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(i-1)
+            val fromDate = Daty.getDaysAgoDateWithoutTime(i)
+            val toDate=Daty.getDaysAgoDateWithoutTime(i-1)
 
             suma_ilosci_posilkow += myActivity.kalorieDao.getPosilkiCountByDate(fromDate, toDate)?: 0
         }
@@ -244,8 +243,8 @@ class StatystykiFragment : Fragment() {
             }
         }
 
-        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
-        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+        val fromDate = Daty.getDaysAgoDateWithoutTime(dni)
+        val toDate=Daty.getDaysAgoDateWithoutTime(-1)
 
         ilosc_posilkow = myActivity.kalorieDao.getPosilkiCountByDate(fromDate, toDate)?: 1
         suma_kalorii=myActivity.kalorieDao.getKalorieSumByDate(fromDate,toDate)?: 0
@@ -279,8 +278,8 @@ class StatystykiFragment : Fragment() {
             }
         }
 
-        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
-        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+        val fromDate = Daty.getDaysAgoDateWithoutTime(dni)
+        val toDate=Daty.getDaysAgoDateWithoutTime(-1)
         posilek=myActivity.kalorieDao.getNajczestszyPosilekByDate(fromDate,toDate)?: NajczestszyPosilek()
 
         when(okresCzasu)
@@ -311,8 +310,8 @@ class StatystykiFragment : Fragment() {
                 dni=29
             }
         }
-        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
-        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+        val fromDate = Daty.getDaysAgoDateWithoutTime(dni)
+        val toDate=Daty.getDaysAgoDateWithoutTime(-1)
 
         ilosc_posilkow = myActivity.kalorieDao.getPosilkiCountByDate(fromDate, toDate)?: 0
 
@@ -345,8 +344,8 @@ class StatystykiFragment : Fragment() {
             }
         }
 
-        val fromDate = JEBANEDATY.getDaysAgoDateWithoutTime(dni)
-        val toDate=JEBANEDATY.getDaysAgoDateWithoutTime(-1)
+        val fromDate = Daty.getDaysAgoDateWithoutTime(dni)
+        val toDate=Daty.getDaysAgoDateWithoutTime(-1)
         suma_kalorii=myActivity.kalorieDao.getKalorieSumByDate(fromDate,toDate)?: 0
 
         when(okresCzasu)

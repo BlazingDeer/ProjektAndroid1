@@ -2,10 +2,10 @@ package com.example.projektandroid1
 
 import java.util.*
 
-class JEBANEDATY {
+class Daty {
 
     //comapnion object to po to zeby te funkcje w srodku byly traktowane
-    // jak static bo kotlin kurwa nie ma czegfos takiego jak static
+    // jak static bo kotlin kurwa nie ma czegos takiego jak static
     // gowno jebane
     companion object {
         fun getNowDateWithoutTime(): Date {

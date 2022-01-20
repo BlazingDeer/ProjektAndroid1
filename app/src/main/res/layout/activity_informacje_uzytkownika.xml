@@ -225,8 +225,12 @@
                 android:id="@+id/caloriesBurnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dzisiaj spaliłeś:"
-                android:textSize="20sp"/>
+                android:layout_marginBottom="10dp"
+                android:text="Dzisiaj spalono:"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/ic_baseline_accessibility_new_24"
+                android:drawablePadding="10dp"/>
 
             <View
                 android:layout_width="0dp"
@@ -237,8 +241,9 @@
                 android:id="@+id/caloriesBurntValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 kcal"
-                android:textSize="20sp"/>
+                android:text="713 kcal"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 

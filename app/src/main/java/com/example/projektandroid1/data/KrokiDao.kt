@@ -9,14 +9,21 @@ import java.util.Date
 
 @Dao
 interface KrokiDao {
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertKroki(kroki:Kroki)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addKroki(kroki:Kroki): Long
 
     @Query("SELECT * FROM kroki_table ORDER BY id ASC")
     suspend fun getAllData(): List<Kroki>
 
-    @Query("SELECT * FROM kroki_table WHERE date >= :targetDate ORDER BY date DESC")
-    suspend fun getKrokiByDate(targetDate: Date): List<Kroki>
+    @Query("SELECT MAX(ilosc_krokow) FROM kroki_table WHERE date = :targetDate")
+    suspend fun getKrokiByDate(targetDate: Date): Int
 
+    @Query("SELECT MAX(ilosc_krokow) FROM kroki_table WHERE date >=:fromDate AND date < :toDate")
+    suspend fun getKrokiMaxByDate(fromDate: Date, toDate: Date): Int?
+
+    @Query("SELECT sum(ilosc_krokow) FROM kroki_table WHERE date >=:fromDate AND date < :toDate")
+    suspend fun getKrokiSumByDate(fromDate: Date, toDate: Date): Int?
 }

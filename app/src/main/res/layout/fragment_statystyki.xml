@@ -7,12 +7,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="20dp"
         android:orientation="vertical"
         tools:context=".kaloriefragments.StatystykiFragment">
 
         <com.github.mikephil.charting.charts.BarChart
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:layout_marginBottom="30dp"
 
             android:id="@+id/kalorie_week_bar_chart"/>

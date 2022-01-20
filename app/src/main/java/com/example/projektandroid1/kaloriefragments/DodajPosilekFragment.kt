@@ -6,18 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projektandroid1.JEBANEDATY
+import com.example.projektandroid1.Daty
 import com.example.projektandroid1.KalorieActivity
 import com.example.projektandroid1.KalorieRecyclerViewAdapter
 import com.example.projektandroid1.R
 import com.example.projektandroid1.data.Kalorie
-import com.example.projektandroid1.data.ProjektAndroid1Database
 import kotlinx.android.synthetic.main.fragment_dodaj_posilek.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -80,7 +76,7 @@ class DodajPosilekFragment : Fragment() {
     private suspend fun initListaPosilkow() {
         //pobierz dzisiejsze posilki z db
         mKalorieList = ArrayList<Kalorie>(
-            myActivity.kalorieDao.getKalorieByDate(JEBANEDATY.getNowDateWithoutTime())
+            myActivity.kalorieDao.getKalorieByDate(Daty.getNowDateWithoutTime())
         )
 
         // dodanie przedmiotow z bazy danych do RecyclerView
@@ -98,7 +94,7 @@ class DodajPosilekFragment : Fragment() {
         if (posilekEditText.text.isNotEmpty() == true || iloscKaloriiEditText.text.isNotEmpty() == true) {
             val newKalorie = Kalorie(
                 0, iloscKaloriiEditText.text.toString().toInt(), posilekEditText.text.toString(),
-                JEBANEDATY.getNowDate()
+                Daty.getNowDate()
             )
             val inserted_id =
                 myActivity.kalorieDao.insertKalorie(newKalorie)

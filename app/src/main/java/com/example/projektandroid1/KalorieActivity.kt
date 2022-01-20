@@ -1,6 +1,7 @@
 package com.example.projektandroid1
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.projektandroid1.adapters.ViewPagerAdapter
@@ -11,6 +12,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import android.content.Intent
+import android.view.MenuItem
+
+import androidx.annotation.NonNull
+
+
+
 
 class KalorieActivity : AppCompatActivity() {
 
@@ -21,6 +29,8 @@ class KalorieActivity : AppCompatActivity() {
         setContentView(R.layout.activity_kalorie)
 
         this.setTitle("KeepFit - Kalorie")
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val tabLayout=findViewById<TabLayout>(R.id.kalorie_tab_layout)
         val viewPager2=findViewById<ViewPager2>(R.id.kalorie_view_pager_2)
@@ -48,5 +58,8 @@ class KalorieActivity : AppCompatActivity() {
         }.attach()
     }
 
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        startActivity(Intent(this@KalorieActivity, MainActivity::class.java))
+        return super.onOptionsItemSelected(item)
+    }
 }

@@ -10,4 +10,4 @@ data class Kroki (
     val id: Int,
     val ilosc_krokow: Int,
     val date: Date
-        )
+    )

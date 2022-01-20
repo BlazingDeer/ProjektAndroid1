@@ -1,10 +1,10 @@
 package com.example.projektandroid1
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.SharedPreferences
-import android.hardware.SensorEvent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,11 +14,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.projektandroid1.data.ProjektAndroid1Database
+import com.example.projektandroid1.data.*
 import com.google.android.material.button.MaterialButton
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_dodaj_posilek.*
 import kotlinx.android.synthetic.main.fragment_licznik.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,17 +33,57 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharedPreferences
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var cardKrokiButton: MaterialButton
+    private lateinit var cardKalorieButton: MaterialButton
     private lateinit var progressValueTextView: TextView
+    private lateinit var progressValueTextView2: TextView
+    private lateinit var stepsCardTextView: TextView
+    private lateinit var kalorieCardTextView: TextView
+    public lateinit var kalorieDao: KalorieDao
+    private var targetCaloriesCount=0
+    private var mKalorieList: ArrayList<Kalorie>? =null
+
+    //coś Kotlinowego w celu uzyskania funkcjonalności static Javy? ogarnąć jak działa
+    companion object{
+        val otwarcieKalorieActivity = 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //zapisanie daty otwarcia aplikacji
+        val sharedPreferences = getSharedPreferences("stepCounter_sharedPref", Context.MODE_PRIVATE)
+        //val date = Date(System.currentTimeMillis())
+        var calendar: Calendar
+        calendar = Calendar.getInstance()
+        var simpleDateFormat = SimpleDateFormat("yyMMdd")
+        val dateTime = simpleDateFormat.format(calendar.time).toString()
+        val editor = sharedPreferences.edit()
+        //sprawdzam czy zapisana data ostatniego uruchomienia jest datą dzisiejszą
+        if(sharedPreferences.getString("aktualnaData", "").equals(dateTime)){
+
+        }
+        else{
+            editor.putString("aktualnaData",dateTime)
+            editor.putInt("obecnaLiczbaKrokow",0)
+            editor.apply()
+        }
+
+        kalorieDao= ProjektAndroid1Database.get(this@MainActivity.application).getKalorieDao()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            kalorieDao= ProjektAndroid1Database.get(this@MainActivity.application).getKalorieDao()
+        }
+
         userHeader = findViewById<TextView>(R.id.userHeader)
         circularProgressBar = findViewById<CircularProgressBar>(R.id.circularProgressBar)
         cardKrokiButton = findViewById<MaterialButton>(R.id.cardKrokiButton)
+        cardKalorieButton = findViewById<MaterialButton>(R.id.cardKalorieButton)
         progressValueTextView = findViewById<TextView>(R.id.progressValueTextView)
+        progressValueTextView2 = findViewById<TextView>(R.id.progressValueTextView2)
+        stepsCardTextView = findViewById<TextView>(R.id.stepsCardTextView)
+        kalorieCardTextView = findViewById<TextView>(R.id.kalorieCardTextView)
 
         //wymaganie uprawnienia do aktywności
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
@@ -68,10 +115,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Przycisk Do KalorieActivity
-        val kalorieActivityButton=findViewById<Button>(R.id.kalorieButton)
-        kalorieActivityButton.setOnClickListener {
+        cardKalorieButton.setOnClickListener {
             val intent = Intent(this, KalorieActivity::class.java)
+            otwarcieKalorieActivity+1
             startActivity(intent)
         }
 
@@ -80,8 +126,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, WebViewActivity::class.java)
             startActivity(intent)
         }
-
-        //progressValueTextView.setText("lalaal")
     }
 
     override fun onResume() {
@@ -91,14 +135,70 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.shared_preferences_file_name),
             MODE_PRIVATE
         )
+
+        val krokiSharedPreferences = getSharedPreferences("stepCounter_sharedPref", Context.MODE_PRIVATE)
+
         val imie_nazwisko_pref = sharedPref.getString("imie_nazwisko", "")
-        userHeader.setText("Witaj $imie_nazwisko_pref!")
+        userHeader.text = "Witaj $imie_nazwisko_pref!"
 
         val targetFootCount = sharedPref.getInt("cel_kroki", 6000)
-        circularProgressBar.progressMax = targetFootCount.toFloat()
+        stepsCardTextView.text = "Twój cel to $targetFootCount kroków"
 
-        val currentStepCount = Math.round(sharedPref.getFloat("klucz1", 0F))
-        progressValueTextView.setText("$currentStepCount")
+        /*val currentStepCount =
+            krokiSharedPreferences.getFloat("obecnaLiczbaKrokow", 0F).roundToInt()*/
+        val currentStepCount =
+            krokiSharedPreferences.getInt("obecnaLiczbaKrokow", 0)
+        val progressPercent = (currentStepCount.toDouble()/targetFootCount*100).toInt()
+        progressValueTextView.text = "$progressPercent%"
+        circularProgressBar.apply{
+            progressMax = targetFootCount.toFloat()
+            progress = currentStepCount.toFloat()
+        }
+
+        targetCaloriesCount = sharedPref.getInt("cel_kalorie", 2300)
+        kalorieCardTextView.text = "Twój cel to $targetCaloriesCount kalorii"
+        circularProgressBarKalorie.progressMax = targetCaloriesCount.toFloat()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            initListaPosilkow()
+        }
+    }
+
+    private suspend fun pobierzDzisiejszeKalorie():Int {
+        val fromDate = Daty.getNowDateWithoutTime()
+        val toDate=Daty.getNowDateWithoutTime()
+        val kalorie = kalorieDao.getKalorieSumByDate(fromDate, toDate)?: 0
+        return kalorie
+    }
+
+    private suspend fun initListaPosilkow() {
+        //pobierz dzisiejsze posilki z db
+        mKalorieList = ArrayList<Kalorie>(
+            kalorieDao.getKalorieByDate(Daty.getNowDateWithoutTime())
+        )
+        updateCurrentCalorieTextView()
+    }
+
+    private suspend fun updateCurrentCalorieTextView() {
+        var sum: Int = 0
+        if (mKalorieList != null) {
+            for (k in mKalorieList!!) {
+                sum += k.ilosc_kalorii
+            }
+        }
+
+        var calorieTarget: Int = targetCaloriesCount
+
+        var s: String = "$sum/$calorieTarget"
+
+        withContext(Dispatchers.Main)
+        {
+            progressValueTextView2.text = s
+            circularProgressBarKalorie.apply {
+                progressMax = targetCaloriesCount.toFloat()
+                progress = sum.toFloat()
+            }
+        }
     }
 
     private var doubleBackToExitPressedOnce = false
