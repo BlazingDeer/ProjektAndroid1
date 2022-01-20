@@ -5,8 +5,7 @@ import java.util.*
 class Daty {
 
     //comapnion object to po to zeby te funkcje w srodku byly traktowane
-    // jak static bo kotlin kurwa nie ma czegos takiego jak static
-    // gowno jebane
+    // jak static bo kotlin nie ma czegos takiego jak static
     companion object {
         fun getNowDateWithoutTime(): Date {
             val calendar = Calendar.getInstance()
